@@ -55,7 +55,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3134283079427586888}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0052001956, z: 0.035199977}
+  m_LocalPosition: {x: 0, y: 0, z: 0.035199977}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6447166039480828943}
@@ -220,6 +220,8 @@ MonoBehaviour:
   minRandomWaypointSpawnDistance: -100
   maxRandomWaypointSpawnDistance: 100
   createNumberOfWaypoints: 4
+  enemyDeathVFX: {fileID: 2508226014934948750, guid: dd99e90a7c623a14db97793f0769ea3b, type: 3}
+  enemyHitVFX: {fileID: 8781331233716584084, guid: e48bb5898f7e7a347aa4ffb1f06b9b11, type: 3}
 --- !u!114 &6447166039480340718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,7 +244,7 @@ MonoBehaviour:
   m_atRandom: 0
   m_shotList:
   - m_shotObj: {fileID: 687545297103401076}
-    m_afterDelay: 5
+    m_afterDelay: 3
   m_shotRoutineFinishedCallbackEvents:
     m_PersistentCalls:
       m_Calls: []
@@ -267,7 +269,7 @@ MonoBehaviour:
     m_Bits: 0
   use_pathfind: 1
   state: 2
-  type: 5
+  type: 2
   wait_time: 1
   patrol_path:
   - {fileID: 0}
@@ -303,7 +305,7 @@ MonoBehaviour:
   dont_return: 0
   eye: {fileID: 7206545950765211105}
   vision_prefab: {fileID: 1882539123029776, guid: 57a6d564e20c50b42bc5c97761dde132, type: 3}
-  death_fx_prefab: {fileID: 0}
+  death_fx_prefab: {fileID: 2508226014934948750, guid: dd99e90a7c623a14db97793f0769ea3b, type: 3}
 --- !u!1001 &687545297097409332
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -373,12 +375,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 8c8d5b277ed74314cb2886fd63d918fe, type: 3}
       propertyPath: m_betweenDelay
-      value: 0.5
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 8c8d5b277ed74314cb2886fd63d918fe, type: 3}
       propertyPath: m_bulletPrefab
       value: 
-      objectReference: {fileID: 2695504936057831137, guid: 222bd6ae0a998804dbb070728d992fd9, type: 3}
+      objectReference: {fileID: 7103514905688177370, guid: 3b623a698bfffc741bf5710e8324dce2, type: 3}
     - target: {fileID: 11400000, guid: 8c8d5b277ed74314cb2886fd63d918fe, type: 3}
       propertyPath: m_useAutoRelease
       value: 1

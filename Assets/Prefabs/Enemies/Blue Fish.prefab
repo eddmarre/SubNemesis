@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2334452840764867059}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.004100037, z: 0.024499988}
+  m_LocalPosition: {x: 0, y: 0, z: 0.024499988}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 8435248611460063214}
@@ -245,12 +245,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d91d2888bc49f6244b2b5cee472ce118, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 100
+  _health: 30
   enemyType: 2
   waypointGameObject: {fileID: 898852526395147492, guid: 39111ea081d2a7145a4c73928943dee8, type: 3}
   minRandomWaypointSpawnDistance: -100
   maxRandomWaypointSpawnDistance: 100
   createNumberOfWaypoints: 4
+  enemyDeathVFX: {fileID: 2508226014934948750, guid: dd99e90a7c623a14db97793f0769ea3b, type: 3}
+  enemyHitVFX: {fileID: 8781331233716584084, guid: e48bb5898f7e7a347aa4ffb1f06b9b11, type: 3}
 --- !u!114 &8435248611459630031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,7 +275,7 @@ MonoBehaviour:
   m_atRandom: 0
   m_shotList:
   - m_shotObj: {fileID: 7406736826842934899}
-    m_afterDelay: 10
+    m_afterDelay: 5
   m_shotRoutineFinishedCallbackEvents:
     m_PersistentCalls:
       m_Calls: []
@@ -305,7 +307,7 @@ MonoBehaviour:
   dont_return: 0
   eye: {fileID: 1648888356351788950}
   vision_prefab: {fileID: 1882539123029776, guid: 57a6d564e20c50b42bc5c97761dde132, type: 3}
-  death_fx_prefab: {fileID: 0}
+  death_fx_prefab: {fileID: 2508226014934948750, guid: dd99e90a7c623a14db97793f0769ea3b, type: 3}
 --- !u!114 &8252020178673897755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,8 +320,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6611e123aa8f2a544910b7004df7ecf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  move_speed: 2
-  run_speed: 4
+  move_speed: 4
+  run_speed: 6
   rotate_speed: 120
   fall_speed: 5
   obstacle_mask:
@@ -408,12 +410,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 3d4f67305beac4ecfb6e1c9371a52512, type: 3}
       propertyPath: m_holeSize
-      value: 90
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 3d4f67305beac4ecfb6e1c9371a52512, type: 3}
       propertyPath: m_bulletPrefab
       value: 
-      objectReference: {fileID: 2695504936057831137, guid: 222bd6ae0a998804dbb070728d992fd9, type: 3}
+      objectReference: {fileID: 1385204945651678060, guid: 36dca72039c8b5d4eb663c3b86d628ba, type: 3}
     - target: {fileID: 11400000, guid: 3d4f67305beac4ecfb6e1c9371a52512, type: 3}
       propertyPath: m_useAutoRelease
       value: 1

@@ -159,6 +159,8 @@ MonoBehaviour:
   minRandomWaypointSpawnDistance: -100
   maxRandomWaypointSpawnDistance: 100
   createNumberOfWaypoints: 4
+  enemyDeathVFX: {fileID: 2508226014934948750, guid: dd99e90a7c623a14db97793f0769ea3b, type: 3}
+  enemyHitVFX: {fileID: 8781331233716584084, guid: e48bb5898f7e7a347aa4ffb1f06b9b11, type: 3}
 --- !u!114 &3762810288933282254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,7 +208,7 @@ MonoBehaviour:
     m_Bits: 0
   use_pathfind: 1
   state: 2
-  type: 5
+  type: 2
   wait_time: 1
   patrol_path:
   - {fileID: 0}
@@ -242,7 +244,7 @@ MonoBehaviour:
   dont_return: 0
   eye: {fileID: 6347639944652275573}
   vision_prefab: {fileID: 1882539123029776, guid: 57a6d564e20c50b42bc5c97761dde132, type: 3}
-  death_fx_prefab: {fileID: 0}
+  death_fx_prefab: {fileID: 2508226014934948750, guid: dd99e90a7c623a14db97793f0769ea3b, type: 3}
 --- !u!1 &5203990060101162666
 GameObject:
   m_ObjectHideFlags: 0
@@ -368,6 +370,10 @@ PrefabInstance:
       value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 00f9a2599f95e2c4c9c11ae87202e717, type: 3}
+      propertyPath: m_shiftAngle
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 00f9a2599f95e2c4c9c11ae87202e717, type: 3}
       propertyPath: m_bulletSpeed
       value: 5
       objectReference: {fileID: 0}
@@ -378,7 +384,7 @@ PrefabInstance:
     - target: {fileID: 11400000, guid: 00f9a2599f95e2c4c9c11ae87202e717, type: 3}
       propertyPath: m_bulletPrefab
       value: 
-      objectReference: {fileID: 2695504936057831137, guid: 222bd6ae0a998804dbb070728d992fd9, type: 3}
+      objectReference: {fileID: 1789518520342556524, guid: 21affedc6fe564747b9ca931b5721114, type: 3}
     - target: {fileID: 11400000, guid: 00f9a2599f95e2c4c9c11ae87202e717, type: 3}
       propertyPath: m_spiralWayNum
       value: 3

@@ -3,21 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SphereCollider))]
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private float bulletDamageAmount = 10f;
 
-    // private void OnEnable()
-    // {
-    //     GetComponent<Collider>().enabled = false;
-    //     StartCoroutine(EnableColliderDelay());
-    // }
-    //
-    // IEnumerator EnableColliderDelay()
-    // {
-    //     yield return new WaitForSeconds(.5f);
-    //     GetComponent<Collider>().enabled = true;
-    // }
+    private void OnValidate()
+    {
+        GetComponent<SphereCollider>().radius = .5f;
+    }
+
+    private void Start()
+    {
+        GetComponent<SphereCollider>().radius = .5f;
+    }
 
     private void OnCollisionEnter(Collision collision)
     {

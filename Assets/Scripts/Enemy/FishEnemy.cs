@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using DistantLands;
 using IndieMarc.EnemyVision;
+using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -35,10 +36,15 @@ public class FishEnemy : Health
     [SerializeField] private EnemyType enemyType;
     [SerializeField] private GameObject waypointGameObject;
 
-    [SerializeField] private int minRandomWaypointSpawnDistance = -100;
-    [SerializeField] private int maxRandomWaypointSpawnDistance = 100;
+    [SerializeField] private int minRandomWaypointSpawnDistance = -50;
+    [SerializeField] private int maxRandomWaypointSpawnDistance = 50;
     [SerializeField] private int createNumberOfWaypoints = 4;
     private GameObject waypointParentGameObject;
+
+    [SerializeField] private GameObject enemyDeathVFX;
+    [SerializeField] private GameObject enemyHitVFX;
+    
+    private Random randomNumber = new Random();
 
     private void OnValidate()
     {
@@ -85,15 +91,14 @@ public class FishEnemy : Health
     private void CreateEnemyRandomWaypoints()
     {
         waypointParentGameObject = FindObjectOfType<EnemyDestination>().gameObject;
-        Random randomNumber = new Random();
         List<GameObject> createdWayPoints = new List<GameObject>();
         for (int i = 0; i < createNumberOfWaypoints; i++)
         {
             var xRandomPosition = randomNumber.Next(minRandomWaypointSpawnDistance, maxRandomWaypointSpawnDistance);
             var zRandomPosition = randomNumber.Next(minRandomWaypointSpawnDistance, maxRandomWaypointSpawnDistance);
             var randomLocation =
-                new Vector3(xRandomPosition + transform.position.x, transform.position.y,
-                    zRandomPosition + transform.position.z);
+                new Vector3(xRandomPosition, transform.position.y,
+                    zRandomPosition);
             var newWaypoint = Instantiate(waypointGameObject, randomLocation, Quaternion.identity,
                 waypointParentGameObject.transform);
             createdWayPoints.Add(newWaypoint);
@@ -134,20 +139,26 @@ public class FishEnemy : Health
     {
         if (_health <= 0)
         {
-            Debug.Log($"{gameObject.name} is dead  ", this);
+            var deathVFX = Instantiate(enemyDeathVFX, transform.position, quaternion.identity);
+            Destroy(deathVFX, 3f);
             onTakeDamageAction -= TakeDamage;
             Destroy(gameObject);
         }
         else
         {
             _health -= damageAmount;
+            var hitVFX = Instantiate(enemyHitVFX, transform.position, quaternion.identity);
+            Destroy(hitVFX, 2f);
             if (_health <= 0)
             {
                 onTakeDamageAction -= TakeDamage;
+                var deathVFX = Instantiate(enemyDeathVFX, transform.position, quaternion.identity);
+                Destroy(deathVFX, 3f);
                 Destroy(gameObject);
             }
         }
     }
+
 
     public void HamerHeadSharkBehaviour(float playerLocationX, float playerLocationY, float playerLocationZ)
     {
