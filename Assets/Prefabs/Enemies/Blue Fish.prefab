@@ -1,5 +1,65 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2334452840764867059
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1648888356351788950}
+  m_Layer: 6
+  m_Name: Eye
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1648888356351788950
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2334452840764867059}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.004100037, z: 0.024499988}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_Children: []
+  m_Father: {fileID: 8435248611460063214}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2490149636315402901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2968365909814352334}
+  m_Layer: 6
+  m_Name: DestinationLocations
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &2968365909814352334
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2490149636315402901}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7406736825931376764}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7406736825931376765
 GameObject:
   m_ObjectHideFlags: 0
@@ -28,6 +88,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8435248611460063214}
+  - {fileID: 2968365909814352334}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -47,6 +108,8 @@ GameObject:
   - component: {fileID: 8435248611459630033}
   - component: {fileID: 8435248611459630032}
   - component: {fileID: 8435248611459630031}
+  - component: {fileID: 904154641922600748}
+  - component: {fileID: 8252020178673897755}
   m_Layer: 6
   m_Name: RightFish
   m_TagString: Untagged
@@ -66,6 +129,7 @@ Transform:
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
   - {fileID: 7406736826837043123}
+  - {fileID: 1648888356351788950}
   m_Father: {fileID: 7406736825931376764}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -183,6 +247,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 100
   enemyType: 2
+  waypointGameObject: {fileID: 898852526395147492, guid: 39111ea081d2a7145a4c73928943dee8, type: 3}
+  minRandomWaypointSpawnDistance: -100
+  maxRandomWaypointSpawnDistance: 100
+  createNumberOfWaypoints: 4
 --- !u!114 &8435248611459630031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,6 +277,64 @@ MonoBehaviour:
   m_shotRoutineFinishedCallbackEvents:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &904154641922600748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8435248611459630030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f2d63352d3cc446b192c9fe08c735e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vision_angle: 45
+  vision_range: 20
+  vision_near_range: 10
+  vision_height_above: 1
+  vision_height_below: 10
+  touch_range: 1
+  vision_mask:
+    serializedVersion: 2
+    m_Bits: 256
+  group_detect: 1
+  detect_time: 1
+  alerted_time: 10
+  follow_time: 10
+  dont_return: 0
+  eye: {fileID: 1648888356351788950}
+  vision_prefab: {fileID: 1882539123029776, guid: 57a6d564e20c50b42bc5c97761dde132, type: 3}
+  death_fx_prefab: {fileID: 0}
+--- !u!114 &8252020178673897755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8435248611459630030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6611e123aa8f2a544910b7004df7ecf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  move_speed: 2
+  run_speed: 4
+  rotate_speed: 120
+  fall_speed: 5
+  obstacle_mask:
+    serializedVersion: 2
+    m_Bits: 0
+  use_pathfind: 1
+  state: 2
+  type: 2
+  wait_time: 1
+  patrol_path:
+  - {fileID: 0}
+  alert_wait_time: 3
+  alert_walk_time: 10
+  follow_target: {fileID: 0}
+  memory_duration: 4
 --- !u!1001 &7406736826836917555
 PrefabInstance:
   m_ObjectHideFlags: 0

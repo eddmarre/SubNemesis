@@ -1,4 +1,4 @@
 ﻿public abstract class EnemyTypeBehaviour
 {
-    public abstract void UpdateState(Enemy enemy, float playerLocationX, float playerLocationY, float playerLocationZ);
+    public abstract void UpdateState(FishEnemy enemy, float playerLocationX, float playerLocationY, float playerLocationZ);
 }

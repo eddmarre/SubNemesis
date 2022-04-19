@@ -7,8 +7,9 @@ public class EnemyCount : MonoBehaviour
 {
     private void Update()
     {
-        GameObject[] _children;
-        _children = GetComponentsInChildren<GameObject>();
-        gameObject.name = _children.Length.ToString();
+        //     GameObject[] _children;
+        //     _children = GetComponentsInChildren<GameObject>();
+        //     gameObject.name = _children.Length.ToString();
+        // }
     }
 }

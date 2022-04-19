@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2932747880672776655
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2542136061584929132}
+  m_Layer: 6
+  m_Name: Eye
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2542136061584929132
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2932747880672776655}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.432, z: 1.085}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7722661351292690204}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7722661351293174560
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,6 +545,8 @@ GameObject:
   - component: {fileID: 6396725258557679562}
   - component: {fileID: 6396725258557679563}
   - component: {fileID: 6396725258557679564}
+  - component: {fileID: 403447609236971391}
+  - component: {fileID: 5528916275635614924}
   m_Layer: 6
   m_Name: GreatWhiteShark
   m_TagString: Untagged
@@ -536,6 +568,7 @@ Transform:
   - {fileID: 7722661351292690190}
   - {fileID: 7722661351292690188}
   - {fileID: 3740763056394143168}
+  - {fileID: 2542136061584929132}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -601,6 +634,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 100
   enemyType: 0
+  waypointGameObject: {fileID: 898852526395147492, guid: 39111ea081d2a7145a4c73928943dee8, type: 3}
+  minRandomWaypointSpawnDistance: -100
+  maxRandomWaypointSpawnDistance: 100
+  createNumberOfWaypoints: 4
 --- !u!114 &6396725258557679563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -649,6 +686,64 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &403447609236971391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7722661351293174588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6611e123aa8f2a544910b7004df7ecf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  move_speed: 2
+  run_speed: 4
+  rotate_speed: 120
+  fall_speed: 5
+  obstacle_mask:
+    serializedVersion: 2
+    m_Bits: 0
+  use_pathfind: 1
+  state: 2
+  type: 5
+  wait_time: 1
+  patrol_path:
+  - {fileID: 0}
+  alert_wait_time: 3
+  alert_walk_time: 10
+  follow_target: {fileID: 0}
+  memory_duration: 4
+--- !u!114 &5528916275635614924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7722661351293174588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6f2d63352d3cc446b192c9fe08c735e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vision_angle: 45
+  vision_range: 20
+  vision_near_range: 10
+  vision_height_above: 1
+  vision_height_below: 10
+  touch_range: 1
+  vision_mask:
+    serializedVersion: 2
+    m_Bits: 256
+  group_detect: 1
+  detect_time: 1
+  alerted_time: 10
+  follow_time: 10
+  dont_return: 0
+  eye: {fileID: 2542136061584929132}
+  vision_prefab: {fileID: 1882539123029776, guid: 57a6d564e20c50b42bc5c97761dde132, type: 3}
+  death_fx_prefab: {fileID: 0}
 --- !u!1 &7722661351293174590
 GameObject:
   m_ObjectHideFlags: 0

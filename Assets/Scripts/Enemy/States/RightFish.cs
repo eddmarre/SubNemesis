@@ -1,6 +1,6 @@
 ﻿public class RightFish : EnemyTypeBehaviour
 {
-    public override void UpdateState(Enemy enemy, float playerLocationX, float playerLocationY, float playerLocationZ)
+    public override void UpdateState(FishEnemy enemy, float playerLocationX, float playerLocationY, float playerLocationZ)
     {
         enemy.RightFishBehaviour(playerLocationX, playerLocationY, playerLocationZ);
     }

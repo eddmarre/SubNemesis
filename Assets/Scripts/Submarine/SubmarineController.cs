@@ -48,7 +48,7 @@ public class SubmarineController : Health
     private void Update()
     {
         currentState.UpdateState(this);
-        Debug.Log($"{_health}", this);
+        //Debug.Log($"{_health}", this);
     }
 
 
