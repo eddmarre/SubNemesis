@@ -12,12 +12,11 @@ public class EnemyRandomSpawner : MonoBehaviour
     private readonly List<EnemySpawn> _enemySpawns = new List<EnemySpawn>();
     private readonly Random _randomSpawner = new Random();
     private readonly Random _randomEnemyType = new Random();
-    
-    
+
 
     private void Awake()
     {
-      //  StartCoroutine(SpawnInDelay());
+        //  StartCoroutine(SpawnInDelay());
     }
 
     private void InitialSpawn()
@@ -52,7 +51,7 @@ public class EnemyRandomSpawner : MonoBehaviour
         InitialSpawn();
     }
 
-    public void SpawnEnemies()
+    public void SpawnEnemies(int _numberOfEnemiesToSpawn)
     {
         var spawners = GetComponentsInChildren<EnemySpawn>();
         foreach (var enemySpawn in spawners)
@@ -60,7 +59,7 @@ public class EnemyRandomSpawner : MonoBehaviour
             _enemySpawns.Add(enemySpawn);
         }
 
-        for (var ctr = 0; ctr < numberOfEnemiesToSpawn; ++ctr)
+        for (var ctr = 0; ctr < _numberOfEnemiesToSpawn; ++ctr)
         {
             var spawnIndex = _randomSpawner.Next(_enemySpawns.Count);
             var runeIndex = _randomEnemyType.Next(enemyGo.Length);
@@ -69,7 +68,7 @@ public class EnemyRandomSpawner : MonoBehaviour
             var enemy = Instantiate(enemyGo[runeIndex], parentTransform.position, parentTransform.rotation);
 
             enemy.transform.SetParent(enemiesParentTransform);
+            _enemySpawns.Remove(_enemySpawns[spawnIndex]);
         }
-
     }
 }

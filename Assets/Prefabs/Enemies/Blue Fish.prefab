@@ -45,7 +45,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2968365909814352334
 Transform:
   m_ObjectHideFlags: 0
@@ -247,7 +247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 30
   enemyType: 2
-  waypointGameObject: {fileID: 898852526395147492, guid: 39111ea081d2a7145a4c73928943dee8, type: 3}
+  waypointGameObject: {fileID: 2490149636315402901}
   minRandomWaypointSpawnDistance: -100
   maxRandomWaypointSpawnDistance: 100
   createNumberOfWaypoints: 4

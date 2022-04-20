@@ -20,6 +20,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log(collision.gameObject.name);
         if (collision.gameObject.GetComponent<Health>())
         {
             if (collision.gameObject.GetComponent<Health>().onTakeDamageAction != null)
@@ -28,5 +29,11 @@ public class Bullet : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("destroying bullet");
+        Destroy(gameObject);
     }
 }

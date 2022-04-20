@@ -634,7 +634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 200
   enemyType: 0
-  waypointGameObject: {fileID: 898852526395147492, guid: 39111ea081d2a7145a4c73928943dee8, type: 3}
+  waypointGameObject: {fileID: 2932747880672776655}
   minRandomWaypointSpawnDistance: -100
   maxRandomWaypointSpawnDistance: 100
   createNumberOfWaypoints: 4

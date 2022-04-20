@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MoreMountains.Feedbacks;
 using RengeGames.HealthBars;
 using Unity.Mathematics;
 using UnityEngine;
@@ -26,19 +27,19 @@ public class SubmarineController : Health
     [SerializeField] private float turnSpeed = 5f;
     [SerializeField] private float boostSpeed = 2000f;
     [SerializeField] private float dashCoolDown = 1f;
-
+    [SerializeField] private UltimateCircularHealthBar healthBar;
+    [SerializeField] private MMFeedback mmFeedbackDamage;
+    [SerializeField] private MMF_Player mmFeedbackDash;
     private WaitForSeconds _dashCoolDown;
     private Rigidbody _rigidbody;
     private BoxCollider _boxCollider;
-    private UltimateCircularHealthBar _healthBar;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _boxCollider = GetComponent<BoxCollider>();
-
-        _healthBar = FindObjectOfType<UltimateCircularHealthBar>();
-        _healthBar.SetSegmentCount(10f);
+        var amount = _health / 10f;
+        healthBar.SetSegmentCount(amount);
 
         _dashCoolDown = new WaitForSeconds(dashCoolDown);
     }
@@ -47,8 +48,8 @@ public class SubmarineController : Health
     {
         _rigidbody.useGravity = false;
         _rigidbody.isKinematic = false;
-        _rigidbody.drag = .25f;
-        _rigidbody.angularDrag = .5f;
+        _rigidbody.drag = 1f;
+        _rigidbody.angularDrag = 1.5f;
 
         currentState = regularMovmentState;
 
@@ -64,12 +65,17 @@ public class SubmarineController : Health
         // Debug.Log($"{_health}", this);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        currentState.OnCollisionEnterState(this, collision);
+    }
+
 
     public bool DashHandler()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            _rigidbody.drag = .5f;
+            mmFeedbackDash.PlayFeedbacks();
             _rigidbody.AddRelativeForce(Vector3.forward * boostSpeed);
             var boost = Instantiate(boostVFX, boosterTransform.transform.position, Quaternion.identity,
                 boosterTransform.transform);
@@ -97,53 +103,33 @@ public class SubmarineController : Health
     {
         if (Input.GetKey(KeyCode.W))
         {
-            _rigidbody.drag = .25f;
-            _rigidbody.angularDrag = .25f;
             _rigidbody.AddRelativeForce(Vector3.forward * speed);
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            _rigidbody.drag = .25f;
-            _rigidbody.angularDrag = .25f;
-            _rigidbody.AddTorque(Vector3.down * turnSpeed * -Input.GetAxis("Horizontal"));
-            //_rigidbody.AddRelativeForce(Vector3.left * turnSpeed);
+            _rigidbody.AddRelativeTorque(Vector3.down * turnSpeed * -Input.GetAxis("Horizontal"));
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            _rigidbody.drag = .25f;
-            _rigidbody.angularDrag = .25f;
-            _rigidbody.AddRelativeForce(Vector3.back * speed * -Input.GetAxis("Vertical"));
+            _rigidbody.AddRelativeForce(Vector3.back * speed);
         }
 
         if (Input.GetKey(KeyCode.D))
         {
-            _rigidbody.drag = .25f;
-            _rigidbody.angularDrag = .25f;
-            _rigidbody.AddTorque(Vector3.up * speed);
-            // _rigidbody.AddRelativeForce(Vector3.right * turnSpeed);
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            FindObjectOfType<EnemyRandomSpawner>().SpawnEnemies();
-        }
-
-        else
-        {
-            _rigidbody.angularDrag = .5f;
+            _rigidbody.AddRelativeTorque(Vector3.up * turnSpeed * Input.GetAxis("Horizontal"));
         }
     }
 
     public void ShootHandler()
     {
-        if (Input.GetKey(KeyCode.F))
+        if (Input.GetKey(KeyCode.F) && !Input.GetMouseButton(0))
         {
             missleShot.SetActive(true);
             GetComponent<UbhShotCtrl>().StartShotRoutine(0f);
         }
-        else if (Input.GetMouseButton(0))
+        else if (Input.GetMouseButton(0) && !Input.GetKey(KeyCode.F))
         {
             regualrShot.SetActive(true);
             GetComponent<UbhShotCtrl>().StartShotRoutine(0f);
@@ -169,7 +155,9 @@ public class SubmarineController : Health
         else
         {
             _health -= damageAmount;
-            _healthBar.AddRemoveSegments(1);
+            var amount = damageAmount / 10f;
+            healthBar.AddRemoveSegments(amount);
+            mmFeedbackDamage.Play(transform.position);
             var hitVFX = Instantiate(playerHitVFX, transform.position, Quaternion.identity);
             Destroy(hitVFX, 3f);
             if (_health <= 0)

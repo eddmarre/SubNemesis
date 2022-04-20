@@ -36,15 +36,17 @@ public class FishEnemy : Health
     [SerializeField] private EnemyType enemyType;
     [SerializeField] private GameObject waypointGameObject;
 
-    [SerializeField] private int minRandomWaypointSpawnDistance = -50;
-    [SerializeField] private int maxRandomWaypointSpawnDistance = 50;
+    [SerializeField] private int minRandomWaypointSpawnDistance = -25;
+    [SerializeField] private int maxRandomWaypointSpawnDistance = 25;
     [SerializeField] private int createNumberOfWaypoints = 4;
     private GameObject waypointParentGameObject;
 
     [SerializeField] private GameObject enemyDeathVFX;
     [SerializeField] private GameObject enemyHitVFX;
-    
-    private Random randomNumber = new Random();
+
+
+    private GameObject[] enemyPatrolPath;
+
 
     private void OnValidate()
     {
@@ -92,26 +94,33 @@ public class FishEnemy : Health
     {
         waypointParentGameObject = FindObjectOfType<EnemyDestination>().gameObject;
         List<GameObject> createdWayPoints = new List<GameObject>();
+        Random randomNumber = new Random();
         for (int i = 0; i < createNumberOfWaypoints; i++)
         {
             var xRandomPosition = randomNumber.Next(minRandomWaypointSpawnDistance, maxRandomWaypointSpawnDistance);
             var zRandomPosition = randomNumber.Next(minRandomWaypointSpawnDistance, maxRandomWaypointSpawnDistance);
+
+            var unityxRandomPosition =
+                UnityEngine.Random.Range(minRandomWaypointSpawnDistance, maxRandomWaypointSpawnDistance);
+            var unityZRandomPosition =
+                UnityEngine.Random.Range(minRandomWaypointSpawnDistance, maxRandomWaypointSpawnDistance);
             var randomLocation =
-                new Vector3(xRandomPosition, transform.position.y,
-                    zRandomPosition);
+                new Vector3(unityxRandomPosition, transform.position.y,
+                    unityZRandomPosition);
             var newWaypoint = Instantiate(waypointGameObject, randomLocation, Quaternion.identity,
                 waypointParentGameObject.transform);
             createdWayPoints.Add(newWaypoint);
+            randomNumber.Next(minRandomWaypointSpawnDistance, maxRandomWaypointSpawnDistance);
         }
 
-        GameObject[] tempGameObject = new GameObject[createdWayPoints.Count];
+        enemyPatrolPath = new GameObject[createdWayPoints.Count];
 
         for (int i = 0; i < createdWayPoints.Count; i++)
         {
-            tempGameObject[i] = createdWayPoints[i];
+            enemyPatrolPath[i] = createdWayPoints[i];
         }
 
-        _enemy.patrol_path = tempGameObject;
+        _enemy.patrol_path = enemyPatrolPath;
     }
 
 
@@ -199,5 +208,14 @@ public class FishEnemy : Health
     public void SwitchState(EnemyTypeBehaviour state)
     {
         currentState = state;
+    }
+
+    private void OnDestroy()
+    {
+        foreach (var spawn in enemyPatrolPath)
+        {
+            Destroy(spawn);
+        }
+        GetComponent<UbhShotCtrl>().StopShotRoutineAndPlayingShot();
     }
 }

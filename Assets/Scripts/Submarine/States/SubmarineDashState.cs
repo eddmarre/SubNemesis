@@ -1,10 +1,12 @@
-﻿public class SubmarineDashState : SubmarineBaseState
+﻿using UnityEngine;
+
+public class SubmarineDashState : SubmarineBaseState
 {
     public override void StartState(SubmarineController submarineController)
     {
     }
 
-    public override void OnCollisionEnterState(SubmarineController submarineController)
+    public override void OnCollisionEnterState(SubmarineController submarineController, Collision collision)
     {
     }
 

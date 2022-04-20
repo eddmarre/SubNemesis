@@ -8,7 +8,7 @@ public class SubmarineDeathState : SubmarineBaseState
     {
     }
 
-    public override void OnCollisionEnterState(SubmarineController submarineController)
+    public override void OnCollisionEnterState(SubmarineController submarineController, Collision collision)
     {
     }
 
