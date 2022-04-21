@@ -51,7 +51,7 @@ public class EnemyRandomSpawner : MonoBehaviour
         InitialSpawn();
     }
 
-    public void SpawnEnemies(int _numberOfEnemiesToSpawn)
+    public void SpawnEnemies(int _numberOfEnemiesToSpawn, GameObject[] _enemies)
     {
         var spawners = GetComponentsInChildren<EnemySpawn>();
         foreach (var enemySpawn in spawners)
@@ -62,10 +62,10 @@ public class EnemyRandomSpawner : MonoBehaviour
         for (var ctr = 0; ctr < _numberOfEnemiesToSpawn; ++ctr)
         {
             var spawnIndex = _randomSpawner.Next(_enemySpawns.Count);
-            var runeIndex = _randomEnemyType.Next(enemyGo.Length);
+            var enemyIndex = _randomEnemyType.Next(_enemies.Length);
 
             var parentTransform = _enemySpawns[spawnIndex].transform;
-            var enemy = Instantiate(enemyGo[runeIndex], parentTransform.position, parentTransform.rotation);
+            var enemy = Instantiate(_enemies[enemyIndex], parentTransform.position, parentTransform.rotation);
 
             enemy.transform.SetParent(enemiesParentTransform);
             _enemySpawns.Remove(_enemySpawns[spawnIndex]);

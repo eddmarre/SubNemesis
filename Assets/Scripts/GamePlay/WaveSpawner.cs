@@ -6,51 +6,50 @@ using TMPro;
 
 public class WaveSpawner : MonoBehaviour
 {
-    [SerializeField] private float[] waveTimeValue;
-    [SerializeField] private int[] waveSpawnNumbers;
+    // [SerializeField] private float[] waveTimeValue;
+    // [SerializeField] private int[] waveSpawnNumbers;
+    // [SerializeField] private FishEnemy[] waveEnemyType;
+    [SerializeField] private Wave[] waves;
     [SerializeField] private TextMeshProUGUI waveCountText;
-    private int _waveCounter;
+    private int _waveCounter = 0;
+    private List<float> waveTimes = new List<float>();
 
     private EnemyRandomSpawner _enemySpawn;
 
     private void Start()
     {
         _enemySpawn = FindObjectOfType<EnemyRandomSpawner>();
-    }
-
-    private void OnValidate()
-    {
-        if (waveSpawnNumbers.Length != waveTimeValue.Length)
+        foreach (var waveTime in waves)
         {
-            Debug.LogWarning("Both Lenghts must match", this);
+            waveTimes.Add(waveTime.timeToSpawn);
         }
-
-        if (waveSpawnNumbers.Length == 0)
-            Debug.LogWarning("No waves spawn numbers were created", this);
-
-        if (waveTimeValue.Length == 0)
-            Debug.LogWarning("No time values for waves", this);
     }
+
+
 
     private void Update()
     {
         waveCountText.text = _waveCounter.ToString();
-        if (_waveCounter > waveSpawnNumbers.Length - 1 || _waveCounter > waveTimeValue.Length - 1)
+        if (waves.Length == 0)
+        {
+            Debug.LogError("No waves set");
+        }
+        if (_waveCounter > waves.Length - 1)
         {
             Debug.Log("No more spawns", this);
         }
-        else if (waveTimeValue[_waveCounter] > 0)
+        else if (waveTimes[_waveCounter] > 0)
         {
-            waveTimeValue[_waveCounter] -= Time.deltaTime;
+            waveTimes[_waveCounter] -= Time.deltaTime;
         }
-        else if (waveTimeValue[_waveCounter] <= 0)
+        else if (waveTimes[_waveCounter] <= 0)
         {
-            _enemySpawn.SpawnEnemies(waveSpawnNumbers[_waveCounter]);
+            _enemySpawn.SpawnEnemies(waves[_waveCounter].numberOfEnemiesToSpawn, waves[_waveCounter].enemies);
             _waveCounter++;
         }
         else
         {
-            waveTimeValue[_waveCounter] = 0;
+            waveTimes[_waveCounter] = 0;
         }
     }
 }

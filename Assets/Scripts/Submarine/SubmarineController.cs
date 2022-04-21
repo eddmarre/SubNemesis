@@ -6,6 +6,7 @@ using RengeGames.HealthBars;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
 public class SubmarineController : Health
@@ -17,7 +18,7 @@ public class SubmarineController : Health
 
 
     [SerializeField] private GameObject missleShot;
-    [SerializeField] private GameObject regualrShot;
+    [SerializeField] private GameObject regularShot;
     [SerializeField] private GameObject playerHitVFX;
     [SerializeField] private GameObject boostVFX;
     [SerializeField] private GameObject boosterTransform;
@@ -30,9 +31,12 @@ public class SubmarineController : Health
     [SerializeField] private UltimateCircularHealthBar healthBar;
     [SerializeField] private MMFeedback mmFeedbackDamage;
     [SerializeField] private MMF_Player mmFeedbackDash;
+
+
     private WaitForSeconds _dashCoolDown;
     private Rigidbody _rigidbody;
     private BoxCollider _boxCollider;
+    private bool _isNotSpamming = true;
 
     private void Awake()
     {
@@ -56,13 +60,14 @@ public class SubmarineController : Health
         onTakeDamageAction += TakeDamage;
 
         missleShot.SetActive(false);
-        regualrShot.SetActive(false);
+        regularShot.SetActive(false);
+
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
     {
         currentState.UpdateState(this);
-        // Debug.Log($"{_health}", this);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -75,16 +80,52 @@ public class SubmarineController : Health
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            mmFeedbackDash.PlayFeedbacks();
-            _rigidbody.AddRelativeForce(Vector3.forward * boostSpeed);
-            var boost = Instantiate(boostVFX, boosterTransform.transform.position, Quaternion.identity,
-                boosterTransform.transform);
-            Destroy(boost, dashCoolDown);
-            _boxCollider.enabled = false;
-            return true;
+            if (_isNotSpamming)
+            {
+                SpamCheck();
+                var xDirection = Input.GetAxis("Horizontal");
+                var yDirection = Input.GetAxis("Vertical");
+                if (xDirection != 0)
+                {
+                    _rigidbody.AddRelativeForce(Vector3.right * boostSpeed * xDirection);
+                }
+                else if (yDirection < 0)
+                {
+                    _rigidbody.AddRelativeForce(Vector3.back * boostSpeed);
+                }
+                else if (xDirection != 0 && yDirection != 0)
+                {
+                    _rigidbody.AddRelativeForce(new Vector3(xDirection, 0, yDirection) * boostSpeed);
+                }
+                else
+
+                {
+                    _rigidbody.AddRelativeForce(Vector3.forward * boostSpeed);
+                }
+
+                mmFeedbackDash.PlayFeedbacks();
+
+                var boost = Instantiate(boostVFX, boosterTransform.transform.position, Quaternion.identity,
+                    boosterTransform.transform);
+                Destroy(boost, dashCoolDown);
+
+                return true;
+            }
         }
 
         return false;
+    }
+
+    private void SpamCheck()
+    {
+        _isNotSpamming = false;
+        StartCoroutine(ResetIsNotSpammingCheck());
+    }
+
+    IEnumerator ResetIsNotSpammingCheck()
+    {
+        yield return new WaitForSeconds(1f);
+        _isNotSpamming = true;
     }
 
     public void ResetMovement()
@@ -95,7 +136,6 @@ public class SubmarineController : Health
     private IEnumerator ResetMovementControls()
     {
         yield return _dashCoolDown;
-        _boxCollider.enabled = true;
         SwitchState(regularMovmentState);
     }
 
@@ -108,7 +148,7 @@ public class SubmarineController : Health
 
         if (Input.GetKey(KeyCode.A))
         {
-            _rigidbody.AddRelativeTorque(Vector3.down * turnSpeed * -Input.GetAxis("Horizontal"));
+            _rigidbody.AddRelativeForce(Vector3.left * speed);
         }
 
         if (Input.GetKey(KeyCode.S))
@@ -118,26 +158,46 @@ public class SubmarineController : Health
 
         if (Input.GetKey(KeyCode.D))
         {
-            _rigidbody.AddRelativeTorque(Vector3.up * turnSpeed * Input.GetAxis("Horizontal"));
+            _rigidbody.AddRelativeForce(Vector3.right * speed);
+        }
+
+        if (Input.GetAxis("Mouse X") > 0)
+        {
+            _rigidbody.AddRelativeTorque(Vector3.up * turnSpeed * Input.GetAxis("Mouse X"));
+        }
+        else if (Input.GetAxis("Mouse X") < 0)
+        {
+            _rigidbody.AddRelativeTorque(Vector3.down * turnSpeed * -Input.GetAxis("Mouse X"));
         }
     }
 
     public void ShootHandler()
     {
-        if (Input.GetKey(KeyCode.F) && !Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(1) && !Input.GetMouseButtonDown(0))
         {
             missleShot.SetActive(true);
             GetComponent<UbhShotCtrl>().StartShotRoutine(0f);
         }
-        else if (Input.GetMouseButton(0) && !Input.GetKey(KeyCode.F))
+
+        if (Input.GetMouseButton(0) && !Input.GetMouseButtonDown(1))
         {
-            regualrShot.SetActive(true);
+            regularShot.SetActive(true);
             GetComponent<UbhShotCtrl>().StartShotRoutine(0f);
         }
-        else
+
+        if (Input.GetMouseButton(1) && Input.GetMouseButton(0))
         {
-            regualrShot.SetActive(false);
+            regularShot.SetActive(false);
+        }
+
+        if (Input.GetMouseButtonUp(1))
+        {
             missleShot.SetActive(false);
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            regularShot.SetActive(false);
         }
     }
 
@@ -169,8 +229,7 @@ public class SubmarineController : Health
 
     private void Die()
     {
-        Debug.Log($"{gameObject.name} is dead  ", this);
+        onTakeDamageAction -= TakeDamage;
         SwitchState(DeathState);
-        // onTakeDamageAction -= TakeDamage;
     }
 }

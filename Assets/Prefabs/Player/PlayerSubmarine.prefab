@@ -286,6 +286,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1774380874}
   - component: {fileID: 1774380873}
+  - component: {fileID: 1138949788}
   m_Layer: 8
   m_Name: CM vcam1
   m_TagString: Untagged
@@ -337,7 +338,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.773163, y: 1}
+    m_SensorSize: {x: 2.0292504, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -346,6 +347,29 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 1092665153}
+--- !u!114 &1138949788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1774380872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ApplyAfter: 2
+  m_ChannelMask: 1
+  m_Gain: 1
+  m_Use2DDistance: 0
+  m_UseCameraSpace: 1
+  m_ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_Duration: 1
+    m_NoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &52402048925150089
 GameObject:
   m_ObjectHideFlags: 0
@@ -588,15 +612,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _health: 100
   missleShot: {fileID: 8072792734460447571}
-  regualrShot: {fileID: 7998641160976729288}
+  regularShot: {fileID: 7998641160976729288}
   playerHitVFX: {fileID: 169604, guid: 50f7f40acea204c4181d510fe41fa746, type: 3}
   boostVFX: {fileID: 3419618119092264220, guid: 7cc85677e33e37d42b671d54bbaeabf1, type: 3}
   boosterTransform: {fileID: 12082694}
-  speed: 5
-  turnSpeed: 7
+  speed: 8
+  turnSpeed: 3
   boostSpeed: 1000
   dashCoolDown: 0.75
   healthBar: {fileID: 0}
+  mmFeedbackDamage: {fileID: 0}
+  mmFeedbackDash: {fileID: 0}
 --- !u!114 &3954305058787489602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -619,9 +645,9 @@ MonoBehaviour:
   m_atRandom: 0
   m_shotList:
   - m_shotObj: {fileID: 7998641160970727720}
-    m_afterDelay: 0.25
+    m_afterDelay: 0
   - m_shotObj: {fileID: 8072792734453399219}
-    m_afterDelay: 1
+    m_afterDelay: 1.5
   m_shotRoutineFinishedCallbackEvents:
     m_PersistentCalls:
       m_Calls: []
@@ -646,14 +672,14 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1075560278351717707}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 2
   m_Drag: 0.25
   m_AngularDrag: 0.5
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 84
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1075560278351717704
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2381,7 +2407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: c9897796d7bd3fe48852c1b6697bea9f, type: 3}
       propertyPath: m_bulletNum
-      value: 10000
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: c9897796d7bd3fe48852c1b6697bea9f, type: 3}
       propertyPath: m_bulletSpeed
@@ -2397,7 +2423,7 @@ PrefabInstance:
       objectReference: {fileID: 7791312069684611639, guid: 5731335a4cc252e4da054385482c8980, type: 3}
     - target: {fileID: 11400000, guid: c9897796d7bd3fe48852c1b6697bea9f, type: 3}
       propertyPath: m_useAutoRelease
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: c9897796d7bd3fe48852c1b6697bea9f, type: 3}
       propertyPath: m_autoReleaseTime
@@ -2498,12 +2524,16 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: c9897796d7bd3fe48852c1b6697bea9f, type: 3}
+      propertyPath: m_betweenDelay
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: c9897796d7bd3fe48852c1b6697bea9f, type: 3}
       propertyPath: m_bulletPrefab
       value: 
       objectReference: {fileID: 6506453834641087845, guid: beffd405d141017448a6eb468841d0d2, type: 3}
     - target: {fileID: 11400000, guid: c9897796d7bd3fe48852c1b6697bea9f, type: 3}
       propertyPath: m_useAutoRelease
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: c9897796d7bd3fe48852c1b6697bea9f, type: 3}
       propertyPath: m_autoReleaseTime

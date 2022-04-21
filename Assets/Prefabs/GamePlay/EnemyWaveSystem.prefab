@@ -43,9 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29caf004b0645244a853fe4058fae29e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waveTimeValue:
-  - 10
-  - 10
-  - 10
-  waveSpawnNumbers: 030000000300000005000000
+  waves:
+  - {fileID: 11400000, guid: 612fb8f7cae5c1c4a8843653759319f9, type: 2}
+  - {fileID: 11400000, guid: 3ee82e374d80db740afe0ad0a7626318, type: 2}
+  - {fileID: 11400000, guid: e14b07b36dae2cd4caba30d784df1871, type: 2}
   waveCountText: {fileID: 0}
