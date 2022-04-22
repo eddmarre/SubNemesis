@@ -10,7 +10,10 @@ public class SubmarineNormalState : SubmarineBaseState
     {
         if (collision.gameObject.GetComponent<FishEnemy>())
         {
-            submarineController.onTakeDamageAction.Invoke(10f);
+            if (submarineController.onTakeDamageAction != null)
+            {
+                submarineController.onTakeDamageAction.Invoke(10f);
+            }
         }
 
         else if (collision.gameObject.CompareTag("Environment"))

@@ -24,5 +24,6 @@ public class SubmarineDeathState : SubmarineBaseState
         {
             String error = e.ToString();
         }
+        
     }
 }

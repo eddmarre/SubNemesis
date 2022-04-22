@@ -22,6 +22,9 @@ public class SubmarineController : Health
     [SerializeField] private GameObject playerHitVFX;
     [SerializeField] private GameObject boostVFX;
     [SerializeField] private GameObject boosterTransform;
+    [SerializeField] private GameObject pauseCanvas;
+    [SerializeField] private GameObject deathCanvas;
+    [SerializeField] private GameObject waveCanvas;
 
 
     [SerializeField] private float speed = 5f;
@@ -46,21 +49,27 @@ public class SubmarineController : Health
         healthBar.SetSegmentCount(amount);
 
         _dashCoolDown = new WaitForSeconds(dashCoolDown);
+
+        missleShot.SetActive(true);
+        regularShot.SetActive(true);
     }
 
     private void Start()
     {
         _rigidbody.useGravity = false;
         _rigidbody.isKinematic = false;
-        _rigidbody.drag = 1f;
-        _rigidbody.angularDrag = 1.5f;
+        _rigidbody.drag = 3f;
+        _rigidbody.angularDrag = 4.5f;
 
         currentState = regularMovmentState;
 
         onTakeDamageAction += TakeDamage;
 
+
         missleShot.SetActive(false);
         regularShot.SetActive(false);
+        pauseCanvas.SetActive(false);
+        deathCanvas.SetActive(false);
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -83,6 +92,10 @@ public class SubmarineController : Health
             if (_isNotSpamming)
             {
                 SpamCheck();
+
+                missleShot.SetActive(false);
+                regularShot.SetActive(false);
+
                 var xDirection = Input.GetAxis("Horizontal");
                 var yDirection = Input.GetAxis("Vertical");
                 if (xDirection != 0)
@@ -95,7 +108,8 @@ public class SubmarineController : Health
                 }
                 else if (xDirection != 0 && yDirection != 0)
                 {
-                    _rigidbody.AddRelativeForce(new Vector3(xDirection, 0, yDirection) * boostSpeed);
+                    _rigidbody.AddRelativeForce(Vector3.right * boostSpeed * xDirection);
+                    _rigidbody.AddRelativeForce(Vector3.forward * boostSpeed * yDirection);
                 }
                 else
 
@@ -105,7 +119,7 @@ public class SubmarineController : Health
 
                 mmFeedbackDash.PlayFeedbacks();
 
-                var boost = Instantiate(boostVFX, boosterTransform.transform.position, Quaternion.identity,
+                var boost = Instantiate(boostVFX, boosterTransform.transform.position, transform.rotation,
                     boosterTransform.transform);
                 Destroy(boost, dashCoolDown);
 
@@ -161,6 +175,19 @@ public class SubmarineController : Health
             _rigidbody.AddRelativeForce(Vector3.right * speed);
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            pauseCanvas.SetActive(!pauseCanvas.activeSelf);
+            if (pauseCanvas.activeSelf)
+            {
+                Time.timeScale = 0;
+            }
+            else
+            {
+                Time.timeScale = 1;
+            }
+        }
+
         if (Input.GetAxis("Mouse X") > 0)
         {
             _rigidbody.AddRelativeTorque(Vector3.up * turnSpeed * Input.GetAxis("Mouse X"));
@@ -188,6 +215,7 @@ public class SubmarineController : Health
         if (Input.GetMouseButton(1) && Input.GetMouseButton(0))
         {
             regularShot.SetActive(false);
+            GetComponent<UbhShotCtrl>().StartShotRoutine();
         }
 
         if (Input.GetMouseButtonUp(1))
@@ -199,6 +227,11 @@ public class SubmarineController : Health
         {
             regularShot.SetActive(false);
         }
+    }
+
+    void OnDisable()
+    {
+        GetComponent<UbhShotCtrl>().StopShotRoutineAndPlayingShot();
     }
 
     public void SwitchState(SubmarineBaseState state)
@@ -230,6 +263,9 @@ public class SubmarineController : Health
     private void Die()
     {
         onTakeDamageAction -= TakeDamage;
+        deathCanvas.SetActive(true);
+        waveCanvas.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
         SwitchState(DeathState);
     }
 }

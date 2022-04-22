@@ -16,4 +16,4 @@ MonoBehaviour:
   numberOfEnemiesToSpawn: 4
   enemies:
   - {fileID: 7406736825931376765, guid: 26f4c08476df7ba4bb18f3d47639c4e5, type: 3}
-  - {fileID: 687545297994504489, guid: f1494e6fe3682784cbfc071f05f05238, type: 3}
+  - {fileID: 3741893359079656192, guid: 5ad0bba48442a3542aefbd1622c5d761, type: 3}
