@@ -24,6 +24,7 @@ namespace SubNemesis.States
 
         public override void UpdateState(SubmarineController submarineController)
         {
+            submarineController.GetComponent<UbhShotCtrl>().StartShotRoutine();
             submarineController.MovementHandler();
             submarineController.ShootHandler();
             if (submarineController.DashHandler())

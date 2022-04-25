@@ -8,7 +8,6 @@ using SubNemesis.Enemy;
 using SubNemesis.GamePlay;
 using Unity.Mathematics;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = System.Random;
@@ -37,6 +36,8 @@ namespace SubNemesis.Enemy
 
             var randomWaypoints = gameObject.AddComponent<CreateEnemyWaypoints>();
             randomWaypoints.CreateEnemyRandomWaypoints(waypointGameObject, _enemy);
+            
+            GetComponent<UbhShotCtrl>().StartShotRoutine();
         }
 
         private void Start()

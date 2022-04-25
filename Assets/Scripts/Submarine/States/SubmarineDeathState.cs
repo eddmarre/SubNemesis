@@ -13,6 +13,7 @@ namespace SubNemesis.States
 
         public override void UpdateState(SubmarineController submarineController)
         {
+            submarineController.GetComponent<UbhShotCtrl>().StopShotRoutineAndPlayingShot();
             submarineController.GetComponent<VisionTarget>().visible = false;
             submarineController.GetComponent<BoxCollider>().enabled = false;
             try

@@ -8,7 +8,7 @@ namespace SubNemesis.Submarine
 
     public class SubmarineMovementHandler : MonoBehaviour
     {
-        [SerializeField] private float speed = 15f;
+        [SerializeField] private float speed = 13f;
         [SerializeField] private float turnSpeed = 7f;
         [SerializeField] private float boostSpeed = 2000f;
         [SerializeField] private float dashCoolDown = 1f;

@@ -246,11 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 30
-  enemyType: 2
   waypointGameObject: {fileID: 2490149636315402901}
-  minRandomWaypointSpawnDistance: -100
-  maxRandomWaypointSpawnDistance: 100
-  createNumberOfWaypoints: 4
   enemyDeathVFX: {fileID: 2508226014934948750, guid: dd99e90a7c623a14db97793f0769ea3b, type: 3}
   enemyHitVFX: {fileID: 8781331233716584084, guid: e48bb5898f7e7a347aa4ffb1f06b9b11, type: 3}
 --- !u!114 &8435248611459630031
@@ -320,8 +316,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6611e123aa8f2a544910b7004df7ecf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  move_speed: 4
-  run_speed: 6
+  move_speed: 2
+  run_speed: 4
   rotate_speed: 120
   fall_speed: 5
   obstacle_mask:
