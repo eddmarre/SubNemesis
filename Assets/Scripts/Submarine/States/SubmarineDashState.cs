@@ -1,17 +1,17 @@
-﻿using UnityEngine;
+﻿using SubNemesis.Submarine;
+using UnityEngine;
 
-public class SubmarineDashState : SubmarineBaseState
+namespace SubNemesis.States
 {
-    public override void StartState(SubmarineController submarineController)
+    public class SubmarineDashState : SubmarineBaseState
     {
-    }
+        public override void OnCollisionEnterState(SubmarineController submarineController, Collision collision)
+        {
+        }
 
-    public override void OnCollisionEnterState(SubmarineController submarineController, Collision collision)
-    {
-    }
-
-    public override void UpdateState(SubmarineController submarineController)
-    {
-        submarineController.ResetMovement();
+        public override void UpdateState(SubmarineController submarineController)
+        {
+            submarineController.ResetMovement();
+        }
     }
 }

@@ -3,269 +3,150 @@ using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Feedbacks;
 using RengeGames.HealthBars;
+using SubNemesis.GamePlay;
+using SubNemesis.States;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Cursor = UnityEngine.Cursor;
 
-[RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
-public class SubmarineController : Health
+namespace SubNemesis.Submarine
 {
-    public SubmarineBaseState currentState;
-    public SubmarineBaseState regularMovmentState = new SubmarineNormalState();
-    public SubmarineBaseState DashState = new SubmarineDashState();
-    public SubmarineBaseState DeathState = new SubmarineDeathState();
-
-
-    [SerializeField] private GameObject missleShot;
-    [SerializeField] private GameObject regularShot;
-    [SerializeField] private GameObject playerHitVFX;
-    [SerializeField] private GameObject boostVFX;
-    [SerializeField] private GameObject boosterTransform;
-    [SerializeField] private GameObject pauseCanvas;
-    [SerializeField] private GameObject deathCanvas;
-    [SerializeField] private GameObject waveCanvas;
-
-
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float turnSpeed = 5f;
-    [SerializeField] private float boostSpeed = 2000f;
-    [SerializeField] private float dashCoolDown = 1f;
-    [SerializeField] private UltimateCircularHealthBar healthBar;
-    [SerializeField] private MMFeedback mmFeedbackDamage;
-    [SerializeField] private MMF_Player mmFeedbackDash;
-
-
-    private WaitForSeconds _dashCoolDown;
-    private Rigidbody _rigidbody;
-    private BoxCollider _boxCollider;
-    private bool _isNotSpamming = true;
-
-    private void Awake()
+    [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
+    public class SubmarineController : Health
     {
-        _rigidbody = GetComponent<Rigidbody>();
-        _boxCollider = GetComponent<BoxCollider>();
-        var amount = _health / 10f;
-        healthBar.SetSegmentCount(amount);
-
-        _dashCoolDown = new WaitForSeconds(dashCoolDown);
-
-        missleShot.SetActive(true);
-        regularShot.SetActive(true);
-    }
-
-    private void Start()
-    {
-        _rigidbody.useGravity = false;
-        _rigidbody.isKinematic = false;
-        _rigidbody.drag = 3f;
-        _rigidbody.angularDrag = 4.5f;
-
-        currentState = regularMovmentState;
-
-        onTakeDamageAction += TakeDamage;
+        public SubmarineBaseState currentState;
+        public SubmarineBaseState regularMovmentState = new SubmarineNormalState();
+        public SubmarineBaseState DashState = new SubmarineDashState();
+        public SubmarineBaseState DeathState = new SubmarineDeathState();
 
 
-        missleShot.SetActive(false);
-        regularShot.SetActive(false);
-        pauseCanvas.SetActive(false);
-        deathCanvas.SetActive(false);
+        [SerializeField] private GameObject missleShot;
+        [SerializeField] private GameObject regularShot;
 
-        Cursor.lockState = CursorLockMode.Locked;
-    }
+        [SerializeField] private GameObject playerHitVFX;
+        [SerializeField] private GameObject boostVFX;
+        [SerializeField] private GameObject boosterTransform;
 
-    private void Update()
-    {
-        currentState.UpdateState(this);
-    }
+        [SerializeField] private float dashCoolDown = 1f;
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        currentState.OnCollisionEnterState(this, collision);
-    }
+        [SerializeField] private UltimateCircularHealthBar healthBar;
 
+        private FindGUIs _guIs;
+        private FindFeels _feels;
+        private SubmarineMovementHandler _movementHandler;
+        private WaitForSeconds _dashCoolDown;
 
-    public bool DashHandler()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
+        private void Awake()
         {
-            if (_isNotSpamming)
-            {
-                SpamCheck();
+            _guIs = gameObject.AddComponent<FindGUIs>();
+            _feels = gameObject.AddComponent<FindFeels>();
+            _movementHandler = gameObject.AddComponent<SubmarineMovementHandler>();
 
-                missleShot.SetActive(false);
-                regularShot.SetActive(false);
+            healthBar = FindObjectOfType<UltimateCircularHealthBar>();
 
-                var xDirection = Input.GetAxis("Horizontal");
-                var yDirection = Input.GetAxis("Vertical");
-                if (xDirection != 0)
-                {
-                    _rigidbody.AddRelativeForce(Vector3.right * boostSpeed * xDirection);
-                }
-                else if (yDirection < 0)
-                {
-                    _rigidbody.AddRelativeForce(Vector3.back * boostSpeed);
-                }
-                else if (xDirection != 0 && yDirection != 0)
-                {
-                    _rigidbody.AddRelativeForce(Vector3.right * boostSpeed * xDirection);
-                    _rigidbody.AddRelativeForce(Vector3.forward * boostSpeed * yDirection);
-                }
-                else
+            var amount = _health / 10f;
+            healthBar.SetSegmentCount(amount);
 
-                {
-                    _rigidbody.AddRelativeForce(Vector3.forward * boostSpeed);
-                }
+            _dashCoolDown = new WaitForSeconds(dashCoolDown);
 
-                mmFeedbackDash.PlayFeedbacks();
-
-                var boost = Instantiate(boostVFX, boosterTransform.transform.position, transform.rotation,
-                    boosterTransform.transform);
-                Destroy(boost, dashCoolDown);
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private void SpamCheck()
-    {
-        _isNotSpamming = false;
-        StartCoroutine(ResetIsNotSpammingCheck());
-    }
-
-    IEnumerator ResetIsNotSpammingCheck()
-    {
-        yield return new WaitForSeconds(1f);
-        _isNotSpamming = true;
-    }
-
-    public void ResetMovement()
-    {
-        StartCoroutine(ResetMovementControls());
-    }
-
-    private IEnumerator ResetMovementControls()
-    {
-        yield return _dashCoolDown;
-        SwitchState(regularMovmentState);
-    }
-
-    public void MovementHandler()
-    {
-        if (Input.GetKey(KeyCode.W))
-        {
-            _rigidbody.AddRelativeForce(Vector3.forward * speed);
-        }
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            _rigidbody.AddRelativeForce(Vector3.left * speed);
-        }
-
-        if (Input.GetKey(KeyCode.S))
-        {
-            _rigidbody.AddRelativeForce(Vector3.back * speed);
-        }
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            _rigidbody.AddRelativeForce(Vector3.right * speed);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            pauseCanvas.SetActive(!pauseCanvas.activeSelf);
-            if (pauseCanvas.activeSelf)
-            {
-                Time.timeScale = 0;
-            }
-            else
-            {
-                Time.timeScale = 1;
-            }
-        }
-
-        if (Input.GetAxis("Mouse X") > 0)
-        {
-            _rigidbody.AddRelativeTorque(Vector3.up * turnSpeed * Input.GetAxis("Mouse X"));
-        }
-        else if (Input.GetAxis("Mouse X") < 0)
-        {
-            _rigidbody.AddRelativeTorque(Vector3.down * turnSpeed * -Input.GetAxis("Mouse X"));
-        }
-    }
-
-    public void ShootHandler()
-    {
-        if (Input.GetMouseButtonDown(1) && !Input.GetMouseButtonDown(0))
-        {
             missleShot.SetActive(true);
-            GetComponent<UbhShotCtrl>().StartShotRoutine(0f);
-        }
-
-        if (Input.GetMouseButton(0) && !Input.GetMouseButtonDown(1))
-        {
             regularShot.SetActive(true);
-            GetComponent<UbhShotCtrl>().StartShotRoutine(0f);
         }
 
-        if (Input.GetMouseButton(1) && Input.GetMouseButton(0))
+        private void Start()
         {
-            regularShot.SetActive(false);
-            GetComponent<UbhShotCtrl>().StartShotRoutine();
-        }
+            currentState = regularMovmentState;
 
-        if (Input.GetMouseButtonUp(1))
-        {
+            onTakeDamageAction += TakeDamage;
+
             missleShot.SetActive(false);
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
             regularShot.SetActive(false);
+
+            Cursor.lockState = CursorLockMode.Locked;
         }
-    }
 
-    void OnDisable()
-    {
-        GetComponent<UbhShotCtrl>().StopShotRoutineAndPlayingShot();
-    }
-
-    public void SwitchState(SubmarineBaseState state)
-    {
-        currentState = state;
-    }
-
-    public override void TakeDamage(float damageAmount)
-    {
-        if (_health <= 0)
+        private void Update()
         {
-            Die();
+            currentState.UpdateState(this);
         }
-        else
+
+        private void OnCollisionEnter(Collision collision)
         {
-            _health -= damageAmount;
-            var amount = damageAmount / 10f;
-            healthBar.AddRemoveSegments(amount);
-            mmFeedbackDamage.Play(transform.position);
-            var hitVFX = Instantiate(playerHitVFX, transform.position, Quaternion.identity);
-            Destroy(hitVFX, 3f);
+            currentState.OnCollisionEnterState(this, collision);
+        }
+
+        public bool DashHandler()
+        {
+            return _movementHandler.HandleDash(missleShot, regularShot, _feels, boostVFX, boosterTransform);
+        }
+
+        public void ResetMovement()
+        {
+            StartCoroutine(ResetMovementControls());
+        }
+
+        private IEnumerator ResetMovementControls()
+        {
+            yield return _dashCoolDown;
+            SwitchState(regularMovmentState);
+        }
+
+        public void MovementHandler()
+        {
+            _movementHandler.HandleMovement(_guIs);
+        }
+
+        public void ShootHandler()
+        {
+            _movementHandler.HandleShoot(missleShot, regularShot);
+        }
+
+        void OnDisable()
+        {
+            GetComponent<UbhShotCtrl>().StopShotRoutineAndPlayingShot();
+        }
+
+        public void SwitchState(SubmarineBaseState state)
+        {
+            currentState = state;
+        }
+
+        public override void TakeDamage(float damageAmount)
+        {
             if (_health <= 0)
             {
                 Die();
             }
+            else
+            {
+                Damage(damageAmount);
+                if (_health <= 0)
+                {
+                    Die();
+                }
+            }
         }
-    }
 
-    private void Die()
-    {
-        onTakeDamageAction -= TakeDamage;
-        deathCanvas.SetActive(true);
-        waveCanvas.SetActive(false);
-        Cursor.lockState = CursorLockMode.None;
-        SwitchState(DeathState);
+        private void Damage(float damageAmount)
+        {
+            _health -= damageAmount;
+
+            var removeAmount = damageAmount / 10f;
+            healthBar.AddRemoveSegments(removeAmount);
+
+            _feels.PlayDamageFeel();
+
+            var hitVFX = Instantiate(playerHitVFX, transform.position, Quaternion.identity);
+            Destroy(hitVFX, 3f);
+        }
+
+        private void Die()
+        {
+            onTakeDamageAction -= TakeDamage;
+            _guIs.GameOver();
+            Cursor.lockState = CursorLockMode.None;
+            SwitchState(DeathState);
+        }
     }
 }

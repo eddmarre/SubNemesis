@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Intro.unity
+    guid: 40fe954c6399ae249a781628f7d006b5
+  - enabled: 1
     path: Assets/Scenes/Coral Reef.unity
     guid: 94757fd23e84f8c478af58f353a5b3c1
   m_configObjects: {}

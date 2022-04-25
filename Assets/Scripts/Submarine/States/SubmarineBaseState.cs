@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using SubNemesis.Submarine;
+using UnityEngine;
 
-public abstract class SubmarineBaseState
+namespace SubNemesis.States
 {
-    public abstract void StartState(SubmarineController submarineController);
-    public abstract void OnCollisionEnterState(SubmarineController submarineController, Collision collision);
-    public abstract void UpdateState(SubmarineController submarineController);
+    public abstract class SubmarineBaseState
+    {
+        public abstract void OnCollisionEnterState(SubmarineController submarineController, Collision collision);
+        public abstract void UpdateState(SubmarineController submarineController);
+    }
 }

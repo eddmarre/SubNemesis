@@ -3,35 +3,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SphereCollider))]
-public class Bullet : MonoBehaviour
+namespace SubNemesis.GamePlay
 {
-    [SerializeField] private float bulletDamageAmount = 10f;
-
-    private void OnValidate()
+    [RequireComponent(typeof(SphereCollider))]
+    public class Bullet : MonoBehaviour
     {
-        GetComponent<SphereCollider>().radius = .5f;
-    }
+        [SerializeField] private float bulletDamageAmount = 10f;
 
-    private void Start()
-    {
-        GetComponent<SphereCollider>().radius = .5f;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.GetComponent<Health>())
+        private void OnValidate()
         {
-            if (collision.gameObject.GetComponent<Health>().onTakeDamageAction != null)
+            GetComponent<SphereCollider>().radius = .5f;
+        }
+
+        private void Start()
+        {
+            GetComponent<SphereCollider>().radius = .5f;
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.GetComponent<Health>())
             {
-                collision.gameObject.GetComponent<Health>().onTakeDamageAction.Invoke(bulletDamageAmount);
-                Destroy(gameObject);
+                if (collision.gameObject.GetComponent<Health>().onTakeDamageAction != null)
+                {
+                    collision.gameObject.GetComponent<Health>().onTakeDamageAction.Invoke(bulletDamageAmount);
+                    Destroy(gameObject);
+                }
             }
         }
-    }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Destroy(gameObject);
+        private void OnTriggerEnter(Collider other)
+        {
+            Destroy(gameObject);
+        }
     }
 }

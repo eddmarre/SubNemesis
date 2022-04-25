@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyDestination : MonoBehaviour
+namespace SubNemesis.Enemy
 {
-    void Start()
+    public class EnemyDestination : MonoBehaviour
     {
-        
+        //Find in EnemyRandomSpawner
     }
 }

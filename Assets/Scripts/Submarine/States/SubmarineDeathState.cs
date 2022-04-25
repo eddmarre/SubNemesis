@@ -1,29 +1,28 @@
 ﻿using System;
 using IndieMarc.EnemyVision;
+using SubNemesis.Submarine;
 using UnityEngine;
 
-public class SubmarineDeathState : SubmarineBaseState
+namespace SubNemesis.States
 {
-    public override void StartState(SubmarineController submarineController)
+    public class SubmarineDeathState : SubmarineBaseState
     {
-    }
-
-    public override void OnCollisionEnterState(SubmarineController submarineController, Collision collision)
-    {
-    }
-
-    public override void UpdateState(SubmarineController submarineController)
-    {
-        submarineController.GetComponent<VisionTarget>().visible = false;
-        submarineController.GetComponent<BoxCollider>().enabled = false;
-        try
+        public override void OnCollisionEnterState(SubmarineController submarineController, Collision collision)
         {
-            submarineController.GetComponentInChildren<MakeSubmarineInvisible>().Disappear();
         }
-        catch (Exception e)
+
+        public override void UpdateState(SubmarineController submarineController)
         {
-            String error = e.ToString();
+            submarineController.GetComponent<VisionTarget>().visible = false;
+            submarineController.GetComponent<BoxCollider>().enabled = false;
+            try
+            {
+                submarineController.GetComponentInChildren<MakeSubmarineInvisible>().Disappear();
+            }
+            catch (Exception e)
+            {
+                String error = e.ToString();
+            }
         }
-        
     }
 }

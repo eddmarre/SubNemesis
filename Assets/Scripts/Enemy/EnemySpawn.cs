@@ -1,5 +1,8 @@
 using UnityEngine;
-public class EnemySpawn : MonoBehaviour
-{
 
+namespace SubNemesis.Enemy
+{
+    public class EnemySpawn : MonoBehaviour
+    {
+    }
 }

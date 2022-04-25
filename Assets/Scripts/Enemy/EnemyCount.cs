@@ -3,13 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyCount : MonoBehaviour
+namespace SubNemesis.Enemy
 {
-    private void Update()
+    public class EnemyCount : MonoBehaviour
     {
-        //     GameObject[] _children;
-        //     _children = GetComponentsInChildren<GameObject>();
-        //     gameObject.name = _children.Length.ToString();
-        // }
+        //Used for waveSpawen to find
     }
 }

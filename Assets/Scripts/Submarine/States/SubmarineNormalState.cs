@@ -1,34 +1,35 @@
-﻿using UnityEngine;
+﻿using SubNemesis.Enemy;
+using SubNemesis.Submarine;
+using UnityEngine;
 
-public class SubmarineNormalState : SubmarineBaseState
+namespace SubNemesis.States
 {
-    public override void StartState(SubmarineController submarineController)
+    public class SubmarineNormalState : SubmarineBaseState
     {
-    }
-
-    public override void OnCollisionEnterState(SubmarineController submarineController, Collision collision)
-    {
-        if (collision.gameObject.GetComponent<FishEnemy>())
+        public override void OnCollisionEnterState(SubmarineController submarineController, Collision collision)
         {
-            if (submarineController.onTakeDamageAction != null)
+            if (collision.gameObject.GetComponent<FishEnemy>())
+            {
+                if (submarineController.onTakeDamageAction != null)
+                {
+                    submarineController.onTakeDamageAction.Invoke(10f);
+                }
+            }
+
+            else if (collision.gameObject.CompareTag("Environment"))
             {
                 submarineController.onTakeDamageAction.Invoke(10f);
             }
         }
 
-        else if (collision.gameObject.CompareTag("Environment"))
+        public override void UpdateState(SubmarineController submarineController)
         {
-            submarineController.onTakeDamageAction.Invoke(10f);
-        }
-    }
-
-    public override void UpdateState(SubmarineController submarineController)
-    {
-        submarineController.MovementHandler();
-        submarineController.ShootHandler();
-        if (submarineController.DashHandler())
-        {
-            submarineController.SwitchState(submarineController.DashState);
+            submarineController.MovementHandler();
+            submarineController.ShootHandler();
+            if (submarineController.DashHandler())
+            {
+                submarineController.SwitchState(submarineController.DashState);
+            }
         }
     }
 }

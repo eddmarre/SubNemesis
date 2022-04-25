@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MakeSubmarineInvisible : MonoBehaviour
+namespace SubNemesis.Submarine
 {
-    public void Disappear()
+    public class MakeSubmarineInvisible : MonoBehaviour
     {
-        gameObject.SetActive(false);
+        public void Disappear()
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

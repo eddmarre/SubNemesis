@@ -4,31 +4,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ChangeScenes : MonoBehaviour
+namespace SubNemesis.UI
 {
-    private SceneManager _sceneManager;
-
-    public void LoadGame()
+    public class ChangeScenes : MonoBehaviour
     {
-        try
+        private SceneManager _sceneManager;
+
+        public void LoadGame()
         {
-            FindObjectOfType<UbhObjectPool>().ReleaseAllBullet();
+            try
+            {
+                FindObjectOfType<UbhObjectPool>().ReleaseAllBullet();
+            }
+            catch (Exception e)
+            {
+                String nothing = e.ToString();
+            }
+
+            SceneManager.LoadScene("Coral Reef");
         }
-        catch (Exception e)
+
+        public void QuitGame()
         {
-            String nothing = e.ToString();
+            Application.Quit();
         }
 
-        SceneManager.LoadScene("Coral Reef");
-    }
-
-    public void QuitGame()
-    {
-        Application.Quit();
-    }
-
-    public void LoadMainMenu()
-    {
-        SceneManager.LoadScene("Intro");
+        public void LoadMainMenu()
+        {
+            SceneManager.LoadScene("Intro");
+        }
     }
 }
